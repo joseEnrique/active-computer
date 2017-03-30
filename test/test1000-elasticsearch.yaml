@@ -1,7 +1,7 @@
 testId: test1000
 type: randomTemplate
-url : https://jsonplaceholder.typicode.com/posts
-duration: 4 #seconds
+url : http://192.168.0.50:9200/event/log
+duration: 10 #seconds
 count: 1000
 request:
   method: POST

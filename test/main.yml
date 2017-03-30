@@ -25,24 +25,28 @@
     apt:
       name: python-pip
       state: latest
+  - name: Download Node
+    shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - name: Install node
+    apt: name=nodejs
   - name: For elasticsearch system
     shell: sysctl -w vm.max_map_count=262144
   - name: Install git
     git:
       repo: 'https://github.com/joseEnrique/elasticsearch-kibana-docker.git'
       dest: /srv/elastic
-      update: no
+  - name: Install git
+    git:
+      repo: 'https://github.com/joseEnrique/active-compute.git'
+      dest: /srv/active-compute
   - name: Install pip docker compose
     pip:
       name: docker-compose
   - name: For elasticsearch system
     shell: sync && sysctl -w vm.drop_caches=3
-  - name: run active Compute
-    copy:
-      src: /home/quique/lab/tfg-quique/active-compute/*
-      dest: /srv/active-compute/
-      owner: root
-      group: root
-      mode: 0655
+  - name: Run active compute
+    shell: cd /srv/active-compute 
+    shell: npm install && node index.js &
+
   - name: exec elasticsearch
-    shell: cd /srv/elastic && docker-compose up -d
+    shell: cd /srv/elastic  && docker-compose up -d
