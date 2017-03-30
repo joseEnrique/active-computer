@@ -1,0 +1,10 @@
+production:
+  loglevel: info
+  logfile: '../logs'
+  logrequest: './requests.log'
+
+
+development:
+  loglevel: debug
+  logfile: '../logs'
+  logrequest: './requests.log'

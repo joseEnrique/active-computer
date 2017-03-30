@@ -1,0 +1,57 @@
+{
+  "mappings": {
+    "log": {
+      "properties": {
+        "sla": {
+          "type": "keyword"
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "tenant": {
+              "type": "keyword"
+            },
+            "account": {
+              "type": "keyword"
+            }
+          }
+        },
+        "sender": {
+          "type": "object",
+          "properties": {
+            "hosts": {
+              "type": "text"
+            },
+            "environment": {
+              "type": "text"
+            },
+            "cluster": {
+              "type": "text"
+            }
+          }
+        },
+        "measures": {
+          "type": "nested",
+          "include_in_parent": true,
+          "properties": {
+            "resource": {
+              "type": "keyword"
+            },
+            "method": {
+              "type": "keyword"
+            },
+            "result": {
+              "type": "text"
+            },
+            "ts": {
+              "type": "date"
+            },
+            "metrics": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  }
+}

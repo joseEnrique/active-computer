@@ -1,0 +1,24 @@
+{
+  "stateType": "metrics",
+  "agreementId": "T14-L2-S12-minimal",
+  "id": "SPU_IO_K00",
+  "scope": {
+    "tenant": "tenant1",
+    "account": "john@tenant.com",
+    "resource": "/pets",
+    "operations": "GET"
+  },
+  "period": {
+    "to": "2016-04-15T21:59:59.999Z",
+    "from": "2016-03-15T23:00:00.000Z"
+  },
+  "window": {
+    "type": "static",
+    "period": "monthly",
+    "timeZone": "Europe/Madrid",
+    "initial": "2014-10-15T22:00:00.000Z"
+  },
+  "value": "num",
+  "evidences": null,
+  "parameters": null
+}

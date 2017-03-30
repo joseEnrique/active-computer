@@ -1,0 +1,48 @@
+{
+  "trigger": {
+    "schedule": {
+      "interval": "1s"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "indices": [
+          "states"
+        ],
+        "body": {
+          "query": {
+            "bool": {
+              "must": []
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "gt": 0
+      }
+    }
+  },
+  "actions": {
+    "notify_pager": {
+      "transform": {
+        "script": "[ctx.a = ctx.payload.hits.total < 2000, ctx.payload.hits.total, ctx.payload.hits.hits.0._source ]"
+      },
+      "throttle_period": "1s",
+      "webhook": {
+        "method": "POST",
+        "host": "192.168.250.7",
+        "port": 4000,
+        "path": "/transform-state",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"underLimit\": \"{{ctx.payload._value.0}}\",  \"id\":\"mock-sla0\", \"numRequest\":\"{{ctx.payload._value.1}}\", \"date\":\"{{ctx.execution_time}}\", \"tenant\":\"{{ctx.payload._value.2.tenant}}\",\"account\":\"{{ctx.payload._value.2.account}}\",\"resource\":\"{{ctx.payload._value.2.resource}}\",\"method\":\"{{ctx.payload._value.2.method}}\",\"period_metric\":\"{{ctx.payload._value.2.period}}\", \"prueba\":\"{{ctx.payload._value.2}}\"      }"
+      }
+    }
+  }
+}

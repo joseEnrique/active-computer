@@ -1,0 +1,99 @@
+id: mock-sample
+version: '1.0'
+type: agreement
+context:
+  provider: ISAGroup
+  infrastructure:
+    supervisor: 'http://supervisor.oai.governify.io/api/v2'
+    monitor: 'http://monitor.oai.governify.io/api/v1'
+  definitions:
+    schemas:
+      requests:
+        type: integer
+        format: int64
+        description: Number of requests
+    scopes:
+      api:
+        resource:
+          description: Defines the path in which limits will be checked
+          type: string
+        operation:
+          description: Defines the operations in which limits will be checked
+          type: string
+      oai:
+        level:
+          description: >-
+            Defines the level inside the organization in which limits will be
+            checked
+          type: string
+          enum:
+            - account
+            - tenant
+        account:
+          description: Account 42ID of current request
+          type: string
+      offering:
+        plan:
+          description: Defines diferent levels of service that are provided
+          type: string
+terms:
+  pricing:
+    cost: 0
+    currency: EUR
+    billing:
+      period: monthly
+  configurations: {}
+#añadir las fotos
+  metrics:
+    requests:
+      schema:
+        $ref: '#/context/definitions/schemas/requests'
+      type: consumption
+      scope:
+        resource:
+          $ref: '#/context/definitions/scopes/api/resource'
+        operation:
+          $ref: '#/context/definitions/scopes/api/operation'
+        level:
+          $ref: '#/context/definitions/scopes/oai/level'
+        account:
+          $ref: '#/context/definitions/scopes/oai/account'
+      window:
+        type: 'dynamic'
+        period: 'secondly'
+
+  quotas: []
+#añadir las fotos
+  rates:
+    - id: rates_requests
+      scope:
+        resource:
+          $ref: '#/context/definitions/scopes/api/resource'
+        operation:
+          $ref: '#/context/definitions/scopes/api/operation'
+        level:
+          $ref: '#/context/definitions/scopes/oai/level'
+        account:
+          $ref: '#/context/definitions/scopes/oai/account'
+      over:
+        requests:
+          $ref: '#/terms/metrics/requests'
+      of:
+        - scope:
+            resource: /api/pets
+            operation: GET
+            level: account
+            account: '*'
+          limits:
+            - max: 100
+              period: secondly
+        #- scope:
+        #    resource: /api/pets
+        #    operation: post
+        #    level: account
+        #    account: '*'
+        #  limits:
+        #    - max: 10
+        #      period: secondly
+
+  guarantees: []

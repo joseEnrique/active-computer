@@ -1,0 +1,91 @@
+{
+  "trigger": {
+    "schedule": {
+      "interval": "1s"
+    }
+  },
+  "input": {
+    "search": {
+      "request": {
+        "indices": [
+          "event"
+        ],
+        "body": {
+          "query": {
+            "bool": {
+              "must": {
+                "term": {
+                  "sla": "mock-sample"
+                }
+              },
+              "filter": {
+                "range": {
+                  "measures.ts": {
+                    "gt": "now-1h"
+                  }
+                }
+              }
+            }
+          },
+          "aggs": {
+            "account": {
+              "terms": {
+                "field": "scope.account"
+              },
+              "aggs": {
+                "tenant": {
+                  "terms": {
+                    "field": "scope.tenant"
+                  },
+                  "aggs": {
+                    "attrs_root": {
+                      "nested": {
+                        "path": "measures"
+                      },
+                      "aggs": {
+                        "method": {
+                          "terms": {
+                            "field": "measures.method"
+                          },
+                          "aggs": {
+                            "resource": {
+                              "terms": {
+                                "field": "measures.resource"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "condition": {
+    "compare": {
+      "ctx.payload.hits.total": {
+        "gt": 0
+      }
+    }
+  },
+  "actions": {
+    "notify_pager": {
+      "throttle_period": "1s",
+      "webhook": {
+        "method": "POST",
+        "host": "192.168.250.7",
+        "port": 4000,
+        "path": "/transform/",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"total\": \"{{ctx.payload.aggregations}}\" ,  \"id\":\"mock-sample\", \"period\":\"secondly\" }"
+      }
+    }
+  }
+}

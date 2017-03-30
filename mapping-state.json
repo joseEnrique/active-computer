@@ -1,0 +1,29 @@
+{
+  "mappings": {
+    "state": {
+      "properties": {
+        "sla": {
+          "type": "keyword"
+        },
+        "account": {
+          "type": "keyword"
+        },
+        "tenant": {
+          "type": "keyword"
+        },
+        "resource": {
+          "type": "keyword"
+        },
+        "method": {
+          "type": "keyword"
+        },
+        "num": {
+          "type": "keyword"
+        },
+        "period": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
