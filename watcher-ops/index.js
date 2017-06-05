@@ -5,7 +5,6 @@ var request = require("request");
 var client = function(url) {
     return new elasticsearch.Client({
         host: url,
-        log: 'trace',
         plugins: [elasticsearchWatcher]
     });
 

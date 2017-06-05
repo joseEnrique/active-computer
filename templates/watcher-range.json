@@ -74,13 +74,26 @@
     }
   },
   "actions": {
-    "notify_pager": {
+    "states": {
       "throttle_period": "1s",
       "webhook": {
         "method": "POST",
         "host": "192.168.250.7",
         "port": 4000,
         "path": "/transform/",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"total\": \"{{ctx.payload.aggregations}}\" ,  \"id\":\"mock-sample\", \"period\":\"secondly\" }"
+      }
+    },
+    "registry": {
+      "throttle_period": "1s",
+      "webhook": {
+        "method": "POST",
+        "host": "192.168.250.7",
+        "port": 3000,
+        "path": "/metrics/",
         "headers": {
           "Content-Type": "application/json"
         },
