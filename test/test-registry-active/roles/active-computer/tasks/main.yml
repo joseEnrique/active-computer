@@ -1,0 +1,51 @@
+---
+#
+
+#- name: Install key docker
+#  apt_key:
+    #keyserver: hkp://p80.pool.sks-keyservers.net:80
+    #id: 58118E89F3A912897C070ADBF76221572C52609D
+- name: ADD repo
+  apt_repository:
+    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
+    state: present
+- name: Update apt
+  apt:
+    update_cache: yes
+- name: Install docker
+  apt:
+    name: docker-engine
+    state: latest
+- name: Install git
+  apt:
+    name: git
+    state: latest
+- name: Install pip
+  apt:
+    name: python-pip
+    state: latest
+- name: Download Node
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+- name: Install node
+  apt: name=nodejs
+- name: For elasticsearch system
+  shell: sysctl -w vm.max_map_count=262144
+- name: Install git
+  git:
+    repo: 'https://github.com/joseEnrique/elasticsearch-kibana-docker.git'
+    dest: /srv/elastic
+- name: Install git
+  git:
+    repo: 'https://github.com/joseEnrique/active-compute.git'
+    dest: /srv/active-compute
+- name: Install pip docker compose
+  pip:
+    name: docker-compose
+- name: For elasticsearch system
+  shell: sync && sysctl -w vm.drop_caches=3
+- name: Run active compute
+  shell: cd /srv/active-compute
+  shell: npm install && node index.js &
+
+- name: exec elasticsearch
+  shell: cd /srv/elastic  && docker-compose up -d

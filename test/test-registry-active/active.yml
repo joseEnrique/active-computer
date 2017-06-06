@@ -1,4 +1,5 @@
 ---
-- hosts: active-computer
+- hosts: all
+  remote_user: quique
   roles:
      - active-computer

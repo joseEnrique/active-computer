@@ -1,9 +1,8 @@
 Vagrant.configure("2") do |config|
   config.vm.define :alpha do |active|
     active.vm.box = "ubuntu/trusty64"
-    active.vm.hostname = "myprecise1.box"
     active.vm.network :private_network, ip: "10.0.0.10"
-    active.vm.hostname = "alpha"
+    active.vm.hostname = "active-compute"
     active.vm.provider :virtualbox do |vb|
       vb.name = "active-computer"
       vb.customize [
@@ -12,9 +11,8 @@ Vagrant.configure("2") do |config|
         "--memory", "2048",
       ]
     end
-
     active.vm.provision "ansible" do |ansible|
-       ansible.playbook = "main.yml"
+       ansible.playbook = "active.yml"
      end
 
 
@@ -24,7 +22,7 @@ Vagrant.configure("2") do |config|
     registry.vm.box = "ubuntu/trusty64"
     registry.vm.hostname = "myprecise.box"
     registry.vm.network :private_network, ip: "10.0.0.11"
-    registry.vm.hostname = "beta"
+    registry.vm.hostname = "registry"
   end
 
 

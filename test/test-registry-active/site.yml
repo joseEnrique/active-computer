@@ -1,4 +1,5 @@
 ---
-- hosts: active-computer
+- hosts: all
+  sudo: yes
   roles:
      - active-computer
