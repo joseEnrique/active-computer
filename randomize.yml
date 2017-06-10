@@ -1,8 +1,8 @@
 testId: test100
 type: randomTemplate
 url : http://localhost:9200/event/log
-duration: 100 #seconds
-count: 100
+duration: 10000 #seconds
+count: 50
 request:
   method: POST
   randomFields:
