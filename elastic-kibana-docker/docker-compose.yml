@@ -1,0 +1,26 @@
+version: '2'
+services:
+  elasticsearch:
+    build: elasticsearch/
+    ports:
+      - "9200:9200"
+    networks:
+      - elk
+    volumes:
+      - elasdata1:/usr/share/elasticsearch/data
+  kibana:
+    build: kibana/
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+volumes:
+  elasdata1:
+    driver: local
+
+networks:
+  elk:
+    driver: bridge

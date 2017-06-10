@@ -15,7 +15,7 @@
       update_cache: yes
   - name: Install docker
     apt:
-      name: docker-engine
+      name: docker-ce
       state: latest
   - name: Install git
     apt:
@@ -29,13 +29,14 @@
     shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
   - name: Install node
     apt: name=nodejs
+
   - name: For elasticsearch system
     shell: sysctl -w vm.max_map_count=262144
-  - name: Install git
+  - name: Download  docker-compose with elasticsearch and kibana
     git:
       repo: 'https://github.com/joseEnrique/elasticsearch-kibana-docker.git'
       dest: /srv/elastic
-  - name: Install git
+  - name: Download active-computer project
     git:
       repo: 'https://github.com/joseEnrique/active-compute.git'
       dest: /srv/active-compute
@@ -44,9 +45,13 @@
       name: docker-compose
   - name: For elasticsearch system
     shell: sync && sysctl -w vm.drop_caches=3
+
+  - name: Install all libraries
+    shell: cd /srv/active-compute && npm install
+
   - name: Run active compute
-    shell: cd /srv/active-compute 
-    shell: npm install && node index.js &
+    shell: cd /srv/active-compute && node index.js &
+
 
   - name: exec elasticsearch
     shell: cd /srv/elastic  && docker-compose up -d
