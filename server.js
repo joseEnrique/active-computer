@@ -7,7 +7,7 @@ var request = require('request');
 var manageElastic = require('./watcher-ops');
 
 var moment = require('moment');
-
+var BASE = "/api/v1"
 
 
 var express = require("express"),
@@ -17,11 +17,25 @@ var router = express.Router();
 app.use(bodyParser.json());
 app.use(router);
 
-router.post('/notifications/', function(req, res) {
+router.get('/', function(req, res) {
+  var obj=[
+    ["POST",BASE+'/notifications/'],
+    ["POST",BASE+'/transform-metric/'],
+    ["POST",BASE+'/transform-state/'],
+    ["GET",BASE+'/restart/']
+
+
+  ];
+  res.json(obj);
+
+});
+
+
+router.post(BASE+'/notifications/', function(req, res) {
 
     try {
         var agreement = yaml.safeLoad(fs.readFileSync('./templates/agreement.yml', 'utf8'));
-        var indentedJson = JSON.stringify(agreement, null, 4);
+        //var indentedJson = JSON.stringify(agreement, null, 4);
         //console.log(agreement);
     } catch (e) {
         console.error(e);
@@ -85,7 +99,7 @@ router.post('/notifications/', function(req, res) {
 });
 
 
-router.post('/transform/', function(req, res) {
+router.post(BASE+'/transform-metric/', function(req, res) {
     console.log(req.body);
     var start = new Date();
     console.log(start);
@@ -134,7 +148,7 @@ router.post('/transform/', function(req, res) {
 });
 
 
-router.post('/transform-state/', function(req, res) {
+router.post(BASE+'/transform-state/', function(req, res) {
     console.log("STATE");
     var start = new Date();
     var pmetric = require('./templates/partial-state-metric.json');
@@ -190,7 +204,7 @@ router.post('/transform-state/', function(req, res) {
 });
 
 
-router.get('/restart/', function(req,res){
+router.get(BASE+'/restart/', function(req,res){
   var log = require('./templates/mapping.json');
   var state = require('./templates/mapping-state.json');
   manageElastic.deleteIndex(config.elasticsearch.ip,'event');
@@ -204,20 +218,16 @@ router.get('/restart/', function(req,res){
              json: true,
              body: {s:"s"},
          };
-
     request(options);
     console.log("creado");
   }, 2000);
 
   res.sendStatus(200);
 
-
-
 })
 
 
 
-
-app.listen(4000, function() {
-    console.log("Node server running on http://localhost:4000");
+app.listen(process.env.PORT||4000, function() {
+    console.log("Node server running on http://localhost:"+process.env.PORT||4000);
 });

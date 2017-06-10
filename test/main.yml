@@ -50,7 +50,7 @@
     shell: cd /srv/active-compute && npm install
 
   - name: Run active compute
-    shell: cd /srv/active-compute && node index.js &
+    shell: cd /srv/active-compute && node server.js &
 
 
   - name: exec elasticsearch

@@ -61,7 +61,7 @@
   shell: cd /srv/active-computer && npm install
 
 - name: Run active compute
-  shell: forever start /srv/active-computer
+  shell: forever start /srv/active-computer/server.js
 
 - name: exec elasticsearch
   shell: cd /srv/elastic  && docker-compose up -d
