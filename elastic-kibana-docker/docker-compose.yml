@@ -16,6 +16,13 @@ services:
       - elk
     depends_on:
       - elasticactive
+  test-registry:
+    build: registry/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - elasticactive
+
 
 volumes:
   activepersistency:
