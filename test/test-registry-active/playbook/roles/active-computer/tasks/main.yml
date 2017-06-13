@@ -37,15 +37,16 @@
 - name: For elasticsearch system
   shell: sysctl -w vm.max_map_count=262144
 
-- name: Install git
+- name: Install repo of elastic and kibana
   git:
     repo: 'https://github.com/joseEnrique/elasticsearch-kibana-docker.git'
     dest: /srv/elastic
 
-- name: Install git
+- name: Install active computer
   git:
-    repo: 'https://github.com/joseEnrique/active-compute.git'
+    repo: 'https://github.com/joseEnrique/active-computer.git'
     dest: /srv/active-computer
+    version: dev
 
 - name: Install pip docker compose
   pip:

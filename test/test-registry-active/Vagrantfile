@@ -20,9 +20,20 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :beta do |registry|
     registry.vm.box = "ubuntu/trusty64"
-    registry.vm.hostname = "myprecise.box"
     registry.vm.network :private_network, ip: "10.0.0.11"
     registry.vm.hostname = "registry"
+    registry.vm.provider :virtualbox do |vb|
+      vb.name = "registry"
+      vb.customize [
+        "modifyvm", :id,
+        "--cpus", "1",
+        "--memory", "1000",
+      ]
+    end
+
+    registry.vm.provision "ansible" do |ansible|
+       ansible.playbook = "playbook/registry.yml"
+     end
   end
 
 

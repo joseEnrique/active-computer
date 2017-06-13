@@ -1,0 +1,32 @@
+---
+
+- name: Update apt
+  apt:
+    update_cache: yes
+
+- name: Install git
+  apt:
+    name: git
+    state: latest
+
+- name: Download Node
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+- name: Install node
+  apt: name=nodejs
+
+
+- name: Install repo
+  git:
+    repo: 'https://github.com/joseEnrique/api-post-example.git'
+    dest: /srv/registry
+
+
+- name: Install forever
+  shell: npm install -g forever
+
+- name: Install all libraries
+  shell: cd /srv/registry && npm install
+
+- name: Run active compute
+  shell: forever start /srv/registry/index.js

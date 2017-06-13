@@ -18,17 +18,18 @@ app.use(bodyParser.json());
 app.use(router);
 
 router.get('/', function(req, res) {
-  var obj=[
-    ["POST",BASE+'/notifications/'],
-    ["POST",BASE+'/transform-metric/'],
-    ["POST",BASE+'/transform-state/'],
-    ["GET",BASE+'/restart/']
-  ];
-  res.json(obj);
+    var obj = [
+        ["POST", BASE + '/notifications/'],
+        ["POST", BASE + '/transform-metric/'],
+        ["POST", BASE + '/transform-state/'],
+        ["GET", BASE + '/restart/'],
+        config
+    ];
+    res.json(obj);
 });
 
 
-router.post(BASE+'/notifications/', function(req, res) {
+router.post(BASE + '/notifications/', function(req, res) {
 
     try {
         var agreement = yaml.safeLoad(fs.readFileSync('./templates/agreement.yml', 'utf8'));
@@ -41,7 +42,7 @@ router.post(BASE+'/notifications/', function(req, res) {
     var state = require('./templates/watcher-states.json');
     var time = agreement.terms.metrics.requests.window.period;
     var id = agreement.id;
-    var bodywatcher="{\"total\": \"{{ctx.payload.aggregations}}\" ,  \"id\":\""+id+"\", \"period\":\"secondly\" }" ;
+    var bodywatcher = "{\"total\": \"{{ctx.payload.aggregations}}\" ,  \"id\":\"" + id + "\", \"period\":\"secondly\" }";
     var range = "now-1s"
     if (time == "minutely") {
         range = "now-1m"
@@ -107,7 +108,7 @@ router.post(BASE+'/notifications/', function(req, res) {
         state.actions.registry.webhook.host = config.host;
         state.actions.registry.webhook.port = config.port;
         state.actions.registry.webhook.path = "/api/v1/transform-state/";
-        state.actions.registry.webhook.body = "{\"underLimit\": \"{{ctx.payload._value.0}}\",  \"id\":\""+id+"\", \"numRequest\":\"{{ctx.payload._value.1}}\", \"date\":\"{{ctx.execution_time}}\", \"tenant\":\"{{ctx.payload._value.2.tenant}}\",\"account\":\"{{ctx.payload._value.2.account}}\",\"resource\":\"{{ctx.payload._value.2.resource}}\",\"method\":\"{{ctx.payload._value.2.method}}\",\"period_metric\":\"{{ctx.payload._value.2.period}}\" }";
+        state.actions.registry.webhook.body = "{\"underLimit\": \"{{ctx.payload._value.0}}\",  \"id\":\"" + id + "\", \"numRequest\":\"{{ctx.payload._value.1}}\", \"date\":\"{{ctx.execution_time}}\", \"tenant\":\"{{ctx.payload._value.2.tenant}}\",\"account\":\"{{ctx.payload._value.2.account}}\",\"resource\":\"{{ctx.payload._value.2.resource}}\",\"method\":\"{{ctx.payload._value.2.method}}\",\"period_metric\":\"{{ctx.payload._value.2.period}}\" }";
 
         //console.log(state.input.search.request.body.query.bool.must);
 
@@ -120,7 +121,7 @@ router.post(BASE+'/notifications/', function(req, res) {
 });
 
 
-router.post(BASE+'/transform-metric/', function(req, res) {
+router.post(BASE + '/transform-metric/', function(req, res) {
     //console.log(req.body);
     var start = new Date();
     //console.log(start);
@@ -142,7 +143,7 @@ router.post(BASE+'/transform-metric/', function(req, res) {
 
                     //objs.push(Aobject)
                     var options = {
-                        uri: "http://" + config.elasticsearch.host+":"+ config.elasticsearch.port+ "/states/state",
+                        uri: "http://" + config.elasticsearch.host + ":" + config.elasticsearch.port + "/states/state",
                         method: "POST",
                         json: true,
                         body: Aobject,
@@ -151,7 +152,7 @@ router.post(BASE+'/transform-metric/', function(req, res) {
                     request(options);
 
                     var options1 = {
-                        uri: "http://" +  config.registry.host+":"+ config.registry.port +config.registry.metrics,
+                        uri: "http://" + config.registry.host + ":" + config.registry.port + config.registry.metrics,
                         method: "POST",
                         json: true,
                         body: Aobject,
@@ -169,7 +170,7 @@ router.post(BASE+'/transform-metric/', function(req, res) {
 });
 
 
-router.post(BASE+'/transform-state/', function(req, res) {
+router.post(BASE + '/transform-state/', function(req, res) {
     console.log("STATE");
     var start = new Date();
     var pmetric = require('./templates/partial-state-metric.json');
@@ -213,7 +214,7 @@ router.post(BASE+'/transform-state/', function(req, res) {
     //console.log(sendBody);
     //config.registry.ip
     var options = {
-        uri: "http://" + config.registry.host+":"+ config.registry.port + config.registry.states,
+        uri: "http://" + config.registry.host + ":" + config.registry.port + config.registry.states,
         method: "POST",
         json: true,
         body: sendBody,
@@ -225,25 +226,27 @@ router.post(BASE+'/transform-state/', function(req, res) {
 });
 
 
-router.get(BASE+'/restart/', function(req,res){
-  var log = require('./templates/mapping-event.json');
-  var state = require('./templates/mapping-state.json');
-  manageElastic.deleteIndex( config.elasticsearch.host+":"+ config.elasticsearch.port,'event');
-  manageElastic.deleteIndex( config.elasticsearch.host+":"+ config.elasticsearch.port,'states');
-  manageElastic.deleteWatcher(config.elasticsearch.host+":"+ config.elasticsearch.port, "mock-sample");
-    setTimeout(function(){
-    manageElastic.createMapping( config.elasticsearch.host+":"+ config.elasticsearch.port,'event',log);
-    manageElastic.createMapping( config.elasticsearch.host+":"+ config.elasticsearch.port,'states',state);
-    var options = {
-             uri: "http://localhost:4000/api/v1/notifications",
-             method: "POST",
-             json: true,
-             body: {s:"s"},
-         };
-    request(options);
-    console.log("creado");
-    res.sendStatus(200);
-  }, 4000);
+router.get(BASE + '/restart/', function(req, res) {
+    var log = require('./templates/mapping-event.json');
+    var state = require('./templates/mapping-state.json');
+    manageElastic.deleteIndex(config.elasticsearch.host + ":" + config.elasticsearch.port, 'event');
+    manageElastic.deleteIndex(config.elasticsearch.host + ":" + config.elasticsearch.port, 'states');
+    manageElastic.deleteWatcher(config.elasticsearch.host + ":" + config.elasticsearch.port, "mock-sample");
+    setTimeout(function() {
+        manageElastic.createMapping(config.elasticsearch.host + ":" + config.elasticsearch.port, 'event', log);
+        manageElastic.createMapping(config.elasticsearch.host + ":" + config.elasticsearch.port, 'states', state);
+        var options = {
+            uri: "http://localhost:4000/api/v1/notifications",
+            method: "POST",
+            json: true,
+            body: {
+                s: "s"
+            },
+        };
+        request(options);
+        console.log("creado");
+        res.sendStatus(200);
+    }, 4000);
 
 
 
@@ -252,5 +255,5 @@ router.get(BASE+'/restart/', function(req,res){
 
 
 app.listen(config.port, function() {
-    console.log("Node server running on http://localhost:"+config.port);
+    console.log("Node server running on http://localhost:" + config.port);
 });

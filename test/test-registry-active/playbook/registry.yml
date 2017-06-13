@@ -2,4 +2,4 @@
 - hosts: all
   sudo: yes
   roles:
-     - active-computer
+     - registry
