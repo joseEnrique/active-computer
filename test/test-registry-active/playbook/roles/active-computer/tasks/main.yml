@@ -63,6 +63,10 @@
 
 - name: Run active compute
   shell: forever start /srv/active-computer/server.js
+  environment:
+    ELASTICSEATCH_HOST: 10.0.0.10
+    REGISTRY_HOST: 10.0.0.11
+
 
 - name: exec elasticsearch
   shell: cd /srv/elastic  && docker-compose up -d

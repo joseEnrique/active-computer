@@ -14,8 +14,6 @@ Vagrant.configure("2") do |config|
     active.vm.provision "ansible" do |ansible|
        ansible.playbook = "playbook/active.yml"
      end
-
-
   end
 
   config.vm.define :beta do |registry|
@@ -30,7 +28,6 @@ Vagrant.configure("2") do |config|
         "--memory", "1000",
       ]
     end
-
     registry.vm.provision "ansible" do |ansible|
        ansible.playbook = "playbook/registry.yml"
      end
