@@ -62,7 +62,7 @@
   shell: cd /srv/active-computer && npm install
 
 - name: Run active compute
-  shell: forever start /srv/active-computer/server.js
+  shell: node  /srv/active-computer/server.js &
   environment:
     ELASTICSEATCH_HOST: 10.0.0.10
     REGISTRY_HOST: 10.0.0.11

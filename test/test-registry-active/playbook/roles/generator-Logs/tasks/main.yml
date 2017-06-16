@@ -1,0 +1,27 @@
+---
+
+- name: Update apt
+  apt:
+    update_cache: yes
+
+- name: Install git
+  apt:
+    name: git
+    state: latest
+
+- name: Download Node
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
+- name: Install node
+  apt: name=nodejs
+
+
+- name: Install governify-cli
+  shell: npm install -g governify-cli
+
+
+- name: Copy the file for governify-cli
+  copy: src=roles/generator-Logs/files/randomize.yml dest=/srv/govFile/randomize.yml
+
+- name: Install governify-cli
+  shell: nohup gov test --readFromFile --path /srv/govFile/randomize.yml
