@@ -1,0 +1,64 @@
+==> alpha: Running provisioner: ansible...
+    alpha: Running ansible-playbook...
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default). This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [alpha]
+
+TASK [active-computer : Install key docker] ************************************
+changed: [alpha]
+
+TASK [active-computer : ADD repo] **********************************************
+changed: [alpha]
+
+TASK [active-computer : Update apt] ********************************************
+ok: [alpha]
+
+TASK [active-computer : Install docker] ****************************************
+changed: [alpha]
+
+TASK [active-computer : Install git] *******************************************
+ok: [alpha]
+
+TASK [active-computer : Install pip] *******************************************
+changed: [alpha]
+
+TASK [active-computer : Download Node] *****************************************
+changed: [alpha]
+ [WARNING]: Consider using get_url module rather than running curl
+
+TASK [active-computer : Install node] ******************************************
+changed: [alpha]
+
+TASK [active-computer : For elasticsearch system] ******************************
+changed: [alpha]
+
+TASK [active-computer : Install repo of elastic and kibana] ********************
+changed: [alpha]
+
+TASK [active-computer : Install active computer] *******************************
+changed: [alpha]
+
+TASK [active-computer : Install pip docker compose] ****************************
+changed: [alpha]
+
+TASK [active-computer : For elasticsearch system] ******************************
+changed: [alpha]
+
+TASK [active-computer : Install forever] ***************************************
+changed: [alpha]
+
+TASK [active-computer : Install all libraries] *********************************
+changed: [alpha]
+
+TASK [active-computer : exec elasticsearch] ************************************
+changed: [alpha]
+
+PLAY RECAP *********************************************************************
+alpha                      : ok=17   changed=14   unreachable=0    failed=0   
+

@@ -1,0 +1,43 @@
+==> gamma: Running provisioner: ansible...
+    gamma: Running ansible-playbook...
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default). This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [gamma]
+
+TASK [generator-Logs : Update apt] *********************************************
+ok: [gamma]
+
+TASK [generator-Logs : Install git] ********************************************
+changed: [gamma]
+
+TASK [generator-Logs : Download Node] ******************************************
+changed: [gamma]
+ [WARNING]: Consider using get_url module rather than running curl
+
+TASK [generator-Logs : Install node] *******************************************
+changed: [gamma]
+
+TASK [generator-Logs : Install forever] ****************************************
+changed: [gamma]
+
+TASK [generator-Logs : Creates directory] **************************************
+changed: [gamma]
+
+TASK [generator-Logs : Copy the file for governify-cli] ************************
+changed: [gamma]
+
+TASK [generator-Logs : Install all libraries] **********************************
+changed: [gamma]
+
+TASK [generator-Logs : Send Logs] **********************************************
+changed: [gamma]
+
+PLAY RECAP *********************************************************************
+gamma                      : ok=10   changed=8    unreachable=0    failed=0   
+
