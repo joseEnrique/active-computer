@@ -15,13 +15,18 @@
 - name: Install node
   apt: name=nodejs
 
+- name: Install forever
+  shell: npm install -g forever
 
-- name: Install governify-cli
-  shell: npm install -g governify-cli
-
+- name: Creates directory
+  file: path=/srv/govFile state=directory
 
 - name: Copy the file for governify-cli
-  copy: src=roles/generator-Logs/files/randomize.yml dest=/srv/govFile/randomize.yml
+  copy: src=roles/generator-Logs/files/test dest=/srv/govFile/
 
-- name: Install governify-cli
-  shell: nohup gov test --readFromFile --path /srv/govFile/randomize.yml
+- name: Install all libraries
+  shell: cd /srv/govFile/test && npm install
+
+
+- name: Send Logs
+  shell: forever start /srv/govFile/test/index.js

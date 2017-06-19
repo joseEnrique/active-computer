@@ -28,5 +28,6 @@
 - name: Install all libraries
   shell: cd /srv/registry && npm install
 
+
 - name: Run active compute
   shell: forever start /srv/registry/index.js
