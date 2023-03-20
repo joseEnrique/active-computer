@@ -1,0 +1,40 @@
+==> beta: Running provisioner: ansible...
+    beta: Running ansible-playbook...
+[DEPRECATION WARNING]: Instead of sudo/sudo_user, use become/become_user and 
+make sure become_method is 'sudo' (default). This feature will be removed in a 
+future release. Deprecation warnings can be disabled by setting 
+deprecation_warnings=False in ansible.cfg.
+
+PLAY ***************************************************************************
+
+TASK [setup] *******************************************************************
+ok: [beta]
+
+TASK [registry : Update apt] ***************************************************
+ok: [beta]
+
+TASK [registry : Install git] **************************************************
+changed: [beta]
+
+TASK [registry : Download Node] ************************************************
+changed: [beta]
+ [WARNING]: Consider using get_url module rather than running curl
+
+TASK [registry : Install node] *************************************************
+changed: [beta]
+
+TASK [registry : Install repo] *************************************************
+changed: [beta]
+
+TASK [registry : Install forever] **********************************************
+changed: [beta]
+
+TASK [registry : Install all libraries] ****************************************
+changed: [beta]
+
+TASK [registry : Run active compute] *******************************************
+changed: [beta]
+
+PLAY RECAP *********************************************************************
+beta                       : ok=9    changed=7    unreachable=0    failed=0   
+

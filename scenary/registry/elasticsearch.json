@@ -1,0 +1,42 @@
+
+{
+    "trigger": {
+        "schedule": {
+            "interval": "60s"
+        }
+    },
+    "input": {
+        "search": {
+            "request": {
+                "indices": [
+                    "event"
+                ],
+                "body": {
+                    "query": {
+                        "match": {
+                            "eventCategory": "CRITICAL"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "condition": {
+        "compare": {
+            "ctx.payload.hits.total": {
+                "gt": 0
+            }
+        }
+    },
+    "actions": {
+      "notify_pager" : {
+        "webhook" : {
+          "method" : "POST",
+          "host" : "pager.service.domain",
+          "port" : 1234,
+          "path" : "/{{watch_id}}",
+          "body" : "Encountered {{ctx.payload.hits.total}} errors"
+        }
+    }
+    }
+}

@@ -1,0 +1,55 @@
+Vagrant.configure("2") do |config|
+  config.vm.define :alpha do |active|
+    active.vm.box = "ubuntu/trusty64"
+    active.vm.network :private_network, ip: "10.0.0.10"
+    active.vm.hostname = "active-compute"
+    active.vm.provider :virtualbox do |vb|
+      vb.name = "active-computer"
+      vb.customize [
+        "modifyvm", :id,
+        "--cpus", "2",
+        "--memory", "3500",
+      ]
+    end
+    active.vm.provision "ansible" do |ansible|
+       ansible.playbook = "playbook/active.yml"
+     end
+  end
+
+  config.vm.define :beta do |registry|
+    registry.vm.box = "ubuntu/trusty64"
+    registry.vm.network :private_network, ip: "10.0.0.11"
+    registry.vm.hostname = "registry"
+    registry.vm.provider :virtualbox do |vb|
+      vb.name = "registry"
+      vb.customize [
+        "modifyvm", :id,
+        "--cpus", "1",
+        "--memory", "1000",
+      ]
+    end
+    registry.vm.provision "ansible" do |ansible|
+       ansible.playbook = "playbook/registry.yml"
+     end
+  end
+
+  config.vm.define :gamma do |apigovernanced|
+    apigovernanced.vm.box = "ubuntu/trusty64"
+    apigovernanced.vm.network :private_network, ip: "10.0.0.12"
+    apigovernanced.vm.hostname = "apiGovernanced"
+    apigovernanced.vm.provider :virtualbox do |vb|
+      vb.name = "apiGovernanced"
+      vb.customize [
+        "modifyvm", :id,
+        "--cpus", "1",
+        "--memory", "512",
+      ]
+    end
+    apigovernanced.vm.provision "ansible" do |ansible|
+       ansible.playbook = "playbook/gov.yml"
+     end
+  end
+
+
+
+end

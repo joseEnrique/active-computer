@@ -28,7 +28,7 @@
     }
   },
   "actions": {
-    "notify_pager": {
+    "registry": {
       "transform": {
         "script": "[ctx.a = ctx.payload.hits.total < 2000, ctx.payload.hits.total, ctx.payload.hits.hits.0._source ]"
       },

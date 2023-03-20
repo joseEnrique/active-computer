@@ -1,6 +1,6 @@
 testId: test100
 type: randomTemplate
-url : http://localhost:9200/event/log
+url : http://10.0.0.10:9200/event/log
 duration: 10000 #seconds
 count: 50
 request:
