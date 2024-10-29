@@ -1,5 +1,5 @@
 # https://github.com/elastic/kibana-docker
-FROM docker.elastic.co/kibana/kibana:8.10.3
+FROM docker.elastic.co/kibana/kibana:8.15.3
 #RUN bin/kibana-plugin install https://github.com/joseEnrique/kibana-plugin-line-sg/archive/1.00.0.zip
 #RUN bin/kibana-plugin install x-pack
 COPY config/kibana.yml /usr/share/kibana/config
